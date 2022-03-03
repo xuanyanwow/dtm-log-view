@@ -1,41 +1,58 @@
 package main
 
 import (
-	"bufio"
-	"fmt"
-	"os"
+	"github.com/gin-gonic/gin"
+	"net/http"
 )
 
 func main() {
-	f, err := os.Open("F:\\Siam的资料\\Code\\Go\\dtm_1.12.2_windows_amd64.tar\\dtm_1.12.2_windows_amd64\\dtm.log")
-	if err != nil {
-		panic(err)
-	}
-	defer f.Close()
-
-	//rd := bufio.NewReader(f)
-	//for {
-	//	line, err := rd.ReadString('\n') //以'\n'为结束符读入一行
+	//f, err := os.Open("D:\\Code\\Go\\dtm\\dtm.log")
+	//if err != nil {
+	//	panic(err)
+	//}
+	//defer f.Close()
 	//
-	//	if err != nil || io.EOF == err {
+	//
+	//// TODO 根据配置文件+正则  获取日志文件列表
+	//// TODO 读取指定日志文件全部到内存
+	//
+	//var lineText string
+	//scanner := bufio.NewScanner(f)
+	//max := 3
+	//nowLine := 0
+	//
+	//for scanner.Scan() {
+	//	nowLine++
+	//	if nowLine > max {
 	//		break
 	//	}
-	//	fmt.Println(line)
+	//	lineText = scanner.Text()
+	//
+	//	fmt.Println(lineText)
 	//}
-	var lineText string
-	scanner := bufio.NewScanner(f)
-	max := 3
-	nowLine := 0
+	//
+	//fmt.Println("扫描结束")
 
-	for scanner.Scan() {
-		nowLine++
-		if nowLine > max {
-			break
-		}
-		lineText = scanner.Text()
+	r := setupRouter()
+	r.Run(":8080")
+}
 
-		fmt.Println(lineText)
-	}
 
-	fmt.Println("扫描结束")
+func setupRouter() *gin.Engine {
+	r := gin.Default()
+	// home page
+
+	r.StaticFile("/", "./templates/index.html")
+	r.StaticFile("/index.html", "./templates/index.html")
+
+	// file list api
+	r.GET("/file/get_list", func(c *gin.Context) {
+		c.String(http.StatusOK, "get_list")
+	})
+
+	// file content api
+	r.GET("/file/get_content", func(c *gin.Context) {
+		c.String(http.StatusOK, "get_content")
+	})
+	return r
 }
