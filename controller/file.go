@@ -34,11 +34,12 @@ func GetList(c *gin.Context) {
 }
 
 func GetContent(c *gin.Context) {
-	path := c.Query("path")
+	path := c.PostForm("path")
+	log.Println(path)
 
 	// 转int格式
-	page, _ := strconv.Atoi(c.Query("page"))
-	limit, _ := strconv.Atoi(c.Query("limit"))
+	page, _ := strconv.Atoi(c.PostForm("page"))
+	limit, _ := strconv.Atoi(c.PostForm("limit"))
 
 	_, err := os.Stat(path)
 	if os.IsNotExist(err) {

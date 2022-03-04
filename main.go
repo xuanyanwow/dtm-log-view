@@ -34,7 +34,7 @@ func setupRouter() *gin.Engine {
 	})
 
 	// file content api
-	r.GET("/file/get_content", func(c *gin.Context) {
+	r.POST("/file/get_content", func(c *gin.Context) {
 		controller.GetContent(c)
 	})
 	return r
